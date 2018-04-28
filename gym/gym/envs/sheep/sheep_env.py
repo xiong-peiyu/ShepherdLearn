@@ -22,11 +22,11 @@ class SheepEnv(gym.Env):
   #Env Set-up variable
   SCREEN_WIDTH = 300
   SCREEN_HEIGHT = 300
-  TARGET_X = 200
-  TARGET_Y = 250
+  TARGET_X = 60
+  TARGET_Y = 60
   #finishing radius can be changed later
-  FINISH_RADIUS = 40
-  SHEEP_RADIUS = 25
+  FINISH_RADIUS = 50
+  SHEEP_RADIUS = 40
   Default_SheepCount = 30
   Default_DogCount = 1
   DISCRETE_Action_Count = 4 #Number of action when discrete number of action spaces is used
@@ -61,12 +61,20 @@ class SheepEnv(gym.Env):
       #when it done we need to make sure the average radius of the herd is smaller than a fixed radius
       if(self.get_dist_sqr_to_target() <= self.FINISH_RADIUS*self.FINISH_RADIUS) and (self.get_cluster_dist_from_centroid()<= self.SHEEP_RADIUS):
           return True
+      else:
+          return False
+
   def get_reward(self):
       #start with sparse award for experiements
+      reward = 0
+      if(self.get_dist_sqr_to_target() <= 6.25*self.FINISH_RADIUS*self.FINISH_RADIUS) and (self.get_cluster_dist_from_centroid()<= 4*self.SHEEP_RADIUS):
+          reward = reward + self.FINISH_RADIUS*2.5 - np.sqrt(self.get_dist_sqr_to_target())
       if(self.if_done()):
-          return 100
+          reward = reward + 1000
+          return reward
       else:
-          return -1
+          reward = reward - 10
+          return reward
   def _step(self, action=None):
     #TO-Do: Implementi Action for Shepherd
     assert self.action_space.contains(action), "%r (%s) invalid" % (action, type(action))
@@ -136,10 +144,6 @@ class SheepEnv(gym.Env):
              self.get_cluster_dist_from_centroid(), self.TARGET_X, self.TARGET_Y]
       elif self._obs_type == 'image':
           return self._render(mode='rgb_array')
-
-          #return self.viewer.render(return_rgb_array=True)
-      # return [allDogLocations[0][0], allDogLocations[0][1], SheepCentroid[0], SheepCentroid[1], dog_to_sheep_centroid, self.get_dist_sqr_to_target(),
-      #        self.get_cluster_dist_from_centroid(), self.TARGET_X, self.TARGET_Y]
       ###############################################################
 
 

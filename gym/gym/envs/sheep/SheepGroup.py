@@ -7,7 +7,7 @@ screen_Height = 0
 minDistanceWeight = 20
 
 class SheepGroup():
-    NEIGHBOR_RADIUS = 200
+    NEIGHBOR_RADIUS = 100
     IDLE_RADIUS = 60
 
     def __init__(self,sheepCount,DogCount,screenWidth,screenHeight):
@@ -101,16 +101,16 @@ class SheepGroup():
         ConstantSpeed = 60
         if(action == 0):#Up
             self.DogList[0].velocityY = ConstantSpeed
-            #self.DogList[0].velocityX = 0
+            self.DogList[0].velocityX = 0
         elif(action == 1): #Down
             self.DogList[0].velocityY = -ConstantSpeed
-            #self.DogList[0].velocityX = 0
+            self.DogList[0].velocityX = 0
         elif(action == 2):#Left
             self.DogList[0].velocityX = -ConstantSpeed
-            #self.DogList[0].velocitY = 0
+            self.DogList[0].velocitY = 0
         elif(action ==3 ):#RightY
             self.DogList[0].velocityX = ConstantSpeed
-            #self.DogList[0].velocityY = 0
+            self.DogList[0].velocityY = 0
         #elif(action == 4):#Stay at where it is
            # self.DogList[0].velocityX = 0
            # self.DogList[0].velocityY = 0
